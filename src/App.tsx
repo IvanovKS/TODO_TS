@@ -5,7 +5,7 @@ import './App.css';
 function App() {
   return (
     <div className="App">
-      TODO_TS
+      todo_ts
     </div>
   );
 }
