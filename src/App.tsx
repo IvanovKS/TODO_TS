@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import logo from './logo.svg';
+// import logo from './logo.svg';
 import './App.css';
 import { TaskType, Todo } from './Todo';
 import { v1 } from 'uuid';
@@ -20,6 +20,12 @@ function App() {
         return el.id !== id;
       });
     setTasks(filteredTasks);
+  }
+
+  function addTask(title: string) {
+    let newTask = {id: v1(), title: title, isDone: false};
+    let newTasks = [newTask, ...tasks];
+    setTasks(newTasks);
   }
 
   function changeFilter(value: FilterValuesType) {
@@ -44,6 +50,7 @@ function App() {
             tasks = {tasksForTodo}
             removeTask = {removeTask}
             changeFilter = {changeFilter}
+            addTask = {addTask}
       />
     </div>
   );
