@@ -28,6 +28,15 @@ function App() {
     setTasks(newTasks);
   }
 
+  function changeStatus(taskId: string, isDone: boolean) {
+    let task = tasks.find ((el) => el.id === taskId);
+    if (task) {
+      task.isDone = isDone;
+    }
+    let copyArr = [...tasks];
+    setTasks(copyArr);
+  }
+
   function changeFilter(value: FilterValuesType) {
     setFilter(value);
   }
@@ -51,6 +60,7 @@ function App() {
             removeTask = {removeTask}
             changeFilter = {changeFilter}
             addTask = {addTask}
+            changeTaskStatus = {changeStatus}
       />
     </div>
   );
