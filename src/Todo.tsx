@@ -13,11 +13,12 @@ type PropsType = {
   id: string,
   title: string,
   tasks: Array<TaskType>,
-  removeTask: (id: string) => void,
+  removeTask: (id: string, todoListId: string) => void,
   changeFilter: (value: FilterValuesType, todoListId: string) => void,
-  addTask: (title: string) => void,
-  changeTaskStatus: (taskId: string, isDone: boolean) => void,
+  addTask: (title: string, todoListId: string) => void,
+  changeTaskStatus: (taskId: string, isDone: boolean, todoListId: string) => void,
   filter: FilterValuesType,
+  removeTodoList: (todoListId: string) => void,
 }
 
 export function Todo(props: PropsType) {
@@ -30,7 +31,7 @@ export function Todo(props: PropsType) {
       setError("Обязательное поле");
       return;
     }
-    props.addTask(newTaskTitle);
+    props.addTask(newTaskTitle, props.id);
     setNewTaskTitle("");
   };
   const onChangeHandler = (event: ChangeEvent<HTMLInputElement>) => setNewTaskTitle(event.currentTarget.value);
@@ -43,11 +44,12 @@ export function Todo(props: PropsType) {
   const onAllClickHandler = () => {props.changeFilter("all", props.id)};
   const onActiveClickHandler = () => {props.changeFilter("active", props.id)};
   const onCompletedClickHandler = () => {props.changeFilter("completed", props.id)};
+  const removeTodoList = () => {props.removeTodoList(props.id)};
   // ***---------------------------
 
   return (
     <div>
-      <h3>{props.title}</h3>
+      <h3>{props.title}<button onClick={removeTodoList}>del</button> </h3>
       <div>
         <input  value={newTaskTitle}
                 onChange={onChangeHandler}
@@ -60,7 +62,7 @@ export function Todo(props: PropsType) {
       <ul>
         {
           props.tasks.map((el) => {
-            const onChangeHandler = (event: ChangeEvent<HTMLInputElement>) => {props.changeTaskStatus(el.id, event.currentTarget.checked)};
+            const onChangeHandler = (event: ChangeEvent<HTMLInputElement>) => {props.changeTaskStatus(el.id, event.currentTarget.checked, props.id)};
             return (
               <li key={el.id} className={el.isDone ? "is-done" : ""}>
                 <input  type="checkbox" 
@@ -69,7 +71,7 @@ export function Todo(props: PropsType) {
                         />
                 <span>{el.title}</span>
                 <button onClick={ () => {
-                  props.removeTask(el.id)
+                  props.removeTask(el.id, props.id)
                 }}>Delete</button>
               </li>
             );
